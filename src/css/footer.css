@@ -1,0 +1,138 @@
+.foot-desc-txt {
+  margin-top: 22px;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 34px;
+  color: #e3c08d;
+  max-width: 400px;
+  opacity: 0.9;
+}
+
+.sns-context {
+  margin-top: 17px;
+  width: 137px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sns-context img,
+.sns-context a {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.sns-context img:hover,
+.sns-context a:hover {
+  transform: scale(1.2);
+}
+
+.foot-category-title {
+  width: 106px;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 34px;
+  color: #c5c8c9;
+  position: relative;
+  padding-bottom: 4px;
+  cursor: pointer;
+}
+
+.foot-category-title:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #d7b686;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease-in-out;
+}
+
+.foot-category-title:hover:after {
+  transform: scaleX(1);
+}
+
+.foot-category-link {
+  margin-top: 20px;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 34px;
+}
+
+.foot-category-link a {
+  color: #e3c08d;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.foot-category-link a:hover {
+  color: #ffffff;
+}
+
+.foot-category-link a:after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 1px;
+  left: 0;
+  bottom: -2px;
+  background: #e3c08d;
+  transition: width 0.3s ease;
+}
+
+.foot-category-link a:hover:after {
+  width: 100%;
+}
+
+.find-us {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.find-us span {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 34px;
+  color: #c5c8c9;
+}
+
+.find-us div {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 34px;
+  color: #e3c08d;
+}
+
+.copyright-txt {
+  margin-top: 17px;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 34px;
+  color: #e3c08d;
+  opacity: 0.8;
+  text-align: center;
+}
