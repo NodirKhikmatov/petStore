@@ -1,6 +1,6 @@
 .home-navbar {
-  width: 172vh;
-  height: 100vh;
+  width: 100%;
+  height: 110vh;
   display: flex;
   background: url(../../public/Screenshot\ 2025-05-15\ at\ 12.51.50\ AM.png);
 
@@ -191,8 +191,8 @@
 /* other navbar */
 
 .other-navbar {
-  width: 175vh;
-  height: 50vh;
+  width: 100%;
+  height: 150%;
   display: flex;
   /* background: url("/public/img/banner.webp"); */
   background: url(/public/9484cf1c-10c3-4063-a26f-e200573b0257.png);

@@ -1,27 +1,21 @@
-import {Box, Button, Container, Stack} from "@mui/material";
+import {Box, Button, Container, PaginationItem, Stack} from "@mui/material";
 import {Product, ProductInquiry} from "../../../lib/types/product";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Badge from "@mui/material/Badge";
 import {CartItem} from "../../../lib/types/search";
 import {Dispatch} from "@reduxjs/toolkit";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
 import {ProductCollection} from "../../../lib/enum/product.enum";
 import ProductService from "../../services/ProductService";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import SearchIcon from "@mui/icons-material/Search";
 import {createSelector} from "reselect";
 import {retrieveProducts} from "./selector";
 import {serverApi} from "../../../lib/config";
 import {setProducts} from "./slice";
 import {useHistory} from "react-router-dom";
-
-/**REDUX SLICE & SELECTOR */
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setProducts: (data: Product[]) => dispatch(setProducts(data)),
@@ -52,7 +46,6 @@ export default function Products(props: ProductsProps) {
 
   useEffect(() => {
     const product = new ProductService();
-
     product
       .getProducts(productSearch)
       .then((data) => setProducts(data))
@@ -65,7 +58,6 @@ export default function Products(props: ProductsProps) {
       setProductSearch({...productSearch});
     }
   }, [searchText]);
-  /**Handlers */
 
   const searchCollectionHandler = (collection: ProductCollection) => {
     productSearch.page = 1;
@@ -95,40 +87,66 @@ export default function Products(props: ProductsProps) {
 
   return (
     <div className="products">
-      <Container>
-        <Stack flexDirection={"column"} alignItems={"center"}>
-          <Stack className="avatar-big-box">
-            <Stack className="top-title">
-              <Box className="top-text">🐾 Pawfect Products</Box>
-              <Box className="single-search">
-                <input
-                  type={"search"}
-                  className="single-search-input"
-                  name={"singleResearch"}
-                  placeholder={"Type here"}
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") searchProductHandler();
-                  }}
-                />
-
-                <Button
-                  variant={"contained"}
-                  color={"primary"}
-                  className="single-button-search"
-                  endIcon={<SearchIcon />}
-                  onClick={searchProductHandler}
-                >
-                  search
-                </Button>
-              </Box>
+      <Container maxWidth="lg">
+        <Stack spacing={4} alignItems="center">
+          {/* Title & Search */}
+          <Box textAlign="center" mt={4}>
+            <Box className="top-text">Pawfect Products</Box>
+            <Stack
+              direction={{xs: "column", sm: "row"}}
+              spacing={2}
+              justifyContent="center"
+              alignItems="center"
+              mt={3}
+              width="100%"
+              maxWidth={700}
+            >
+              <input
+                type="search"
+                className="single-search-input"
+                placeholder="searching products..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") searchProductHandler();
+                }}
+                style={{
+                  width: "100%",
+                  padding: "16px 24px",
+                  fontSize: 20,
+                  borderRadius: 10,
+                  border: "2px solid #ccc",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  fontFamily: "'Open Sans', sans-serif",
+                }}
+                onFocus={(e) => (e.target.style.borderColor = "#8e44ad")}
+                onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<SearchIcon />}
+                onClick={searchProductHandler}
+                sx={{
+                  paddingX: 5,
+                  paddingY: 1.8,
+                  fontSize: 20,
+                  borderRadius: 3,
+                  fontWeight: "bold",
+                  fontFamily: "'Open Sans', sans-serif",
+                }}
+              >
+                Search
+              </Button>
             </Stack>
-          </Stack>
-          <Stack className="dishes-filter-section">
+          </Box>
+
+          {/* Filter Buttons */}
+          <Stack direction="row" spacing={2} className="dishes-filter-section">
             <Button
-              variant={"contained"}
-              className="order"
+              className="dishes-filter-button"
+              variant="contained"
               color={
                 productSearch.order === "createdAt" ? "primary" : "secondary"
               }
@@ -136,9 +154,10 @@ export default function Products(props: ProductsProps) {
             >
               New
             </Button>
+
             <Button
-              variant={"contained"}
-              className="order"
+              className="dishes-filter-button"
+              variant="contained"
               color={
                 productSearch.order === "productPrice" ? "primary" : "secondary"
               }
@@ -146,9 +165,10 @@ export default function Products(props: ProductsProps) {
             >
               Price
             </Button>
+
             <Button
-              variant={"contained"}
-              className="order"
+              className="dishes-filter-button"
+              variant="contained"
               color={
                 productSearch.order === "productViews" ? "primary" : "secondary"
               }
@@ -157,133 +177,197 @@ export default function Products(props: ProductsProps) {
               Views
             </Button>
           </Stack>
-          <Stack className="list-category-section">
-            <Stack className="product-category">
-              <Button
-                variant={"contained"}
-                color={
-                  productSearch.productCollection === ProductCollection.TOYS
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductCollection.TOYS)}
-              >
-                TOYS
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                  productSearch.productCollection === ProductCollection.FOOD
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductCollection.FOOD)}
-              >
-                FOOD
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                  productSearch.productCollection ===
-                  ProductCollection.COMFYRAVIOLI
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() =>
-                  searchCollectionHandler(ProductCollection.COMFYRAVIOLI)
-                }
-              >
-                COMFY RAVIOLI
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                  productSearch.productCollection ===
-                  ProductCollection.AppleCiderRecipe
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() =>
-                  searchCollectionHandler(ProductCollection.AppleCiderRecipe)
-                }
-              >
-                ACR
-              </Button>
-              <Button
-                variant={"contained"}
-                color={
-                  productSearch.productCollection === ProductCollection.SSFW
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchCollectionHandler(ProductCollection.SSFW)}
-              >
-                SSFW
-              </Button>
-            </Stack>
-            <Stack className="products-wapper">
-              {products.length !== 0 ? (
-                products.map((product: Product) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
 
-                  return (
-                    <Stack
-                      key={product._id}
-                      className="product-card"
-                      onClick={() => chooseDishHandler(product._id)}
+          {/* Category Buttons */}
+          <Stack
+            direction="row"
+            spacing={2}
+            flexWrap="wrap"
+            justifyContent="center"
+          >
+            {Object.values(ProductCollection).map((collection) => (
+              <Button
+                key={collection}
+                variant="contained"
+                color={
+                  productSearch.productCollection === collection
+                    ? "primary"
+                    : "secondary"
+                }
+                sx={{
+                  fontWeight: 600,
+                  textTransform: "capitalize",
+                  px: 3,
+                  py: 1.3,
+                }}
+                onClick={() => searchCollectionHandler(collection)}
+              >
+                {collection}
+              </Button>
+            ))}
+          </Stack>
+
+          {/* Product Grid */}
+          <Box
+            className="products-wrapper"
+            display="grid"
+            gridTemplateColumns="repeat(auto-fill, minmax(260px, 1fr))"
+            gap={4}
+            justifyItems="center"
+            width="100%"
+          >
+            {products.length > 0 ? (
+              products.map((product: Product) => {
+                const imagePath = `${serverApi}/${product.productImages[0]}`;
+                return (
+                  <Box
+                    key={product._id}
+                    className="product-card"
+                    width="100%"
+                    maxWidth={360}
+                    borderRadius={4}
+                    boxShadow={4}
+                    overflow="hidden"
+                    onClick={() => chooseDishHandler(product._id)}
+                    sx={{
+                      cursor: "pointer",
+                      transition: "transform 0.3s ease",
+                      border: "1px solid #e0e0e0",
+                      "&:hover": {
+                        transform: "scale(1.06)",
+                        boxShadow: "0 10px 25px rgba(245, 235, 235, 0.15)",
+                        "& .shop-btn, & .view-btn": {
+                          opacity: 1,
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      className="product-img"
+                      sx={{
+                        backgroundImage: `url(${imagePath})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        height: {xs: 200, md: 250},
+                        position: "relative",
+                      }}
                     >
-                      <Stack
-                        className="product-img"
+                      {/* Shop Button */}
+                      <Button
+                        className="shop-btn"
                         sx={{
-                          background: `url(${imagePath})`,
+                          position: "absolute",
+                          bottom: 14,
+                          right: 14,
+                          width: 36,
+                          height: 36,
+                          borderRadius: "12px",
+                          bgcolor: "primary.main",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          boxShadow: 5,
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
+                          "&:hover": {
+                            bgcolor: "primary.dark",
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAdd({
+                            _id: product._id,
+                            quantity: 1,
+                            name: product.productName,
+                            price: product.productPrice,
+                            image: product.productImages[0],
+                          });
                         }}
                       >
-                        <Button
-                          className="shop-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onAdd({
-                              _id: product._id,
-                              quantity: 1,
-                              name: product.productName,
-                              price: product.productPrice,
-                              image: product.productImages[0],
-                            });
-                          }}
+                        <img
+                          src="/icons/shopping-cart.svg"
+                          alt="cart"
+                          style={{width: 20, height: 20, filter: "invert(1)"}}
+                        />
+                      </Button>
+
+                      {/* View Button */}
+                      <Button
+                        className="view-btn"
+                        sx={{
+                          position: "absolute",
+                          bottom: 14,
+                          left: 14,
+                          width: 36,
+                          height: 36,
+                          borderRadius: "12px",
+                          bgcolor: "secondary.main",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          boxShadow: 5,
+                          opacity: 0,
+                          transition: "opacity 0.3s ease",
+                          "&:hover": {
+                            bgcolor: "secondary.dark",
+                          },
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          chooseDishHandler(product._id);
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="white"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          width="20"
                         >
-                          <img src={"/icons/shopping-cart.svg"} alt="" />
-                        </Button>
-                        <Button className="view-btn">
-                          <Badge
-                            badgeContent={product.productViews}
-                            color="secondary"
-                          >
-                            <RemoveRedEyeIcon
-                              sx={{
-                                color:
-                                  product.productViews === 0 ? "gray" : "white",
-                              }}
-                            />
-                          </Badge>
-                        </Button>
-                      </Stack>
-                      <Box className="product-desc">
-                        <span className="product-title">
-                          {product.productName}
-                        </span>
-                        <div className="product-desc">
-                          <MonetizationOnIcon color="secondary" />
-                          {product.productPrice}
-                        </div>
+                          <path d="M12 6a9.77 9.77 0 0 0-9.44 6 9.77 9.77 0 0 0 18.88 0A9.77 9.77 0 0 0 12 6zm0 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" />
+                          <circle cx="12" cy="12" r="2.5" />
+                        </svg>
+                      </Button>
+                    </Box>
+
+                    {/* Product Info */}
+                    <Box
+                      p={2}
+                      textAlign="center"
+                      sx={{fontFamily: "'Open Sans', sans-serif"}}
+                    >
+                      <Box
+                        component="h3"
+                        fontSize={{xs: 18, md: 22}}
+                        fontWeight={600}
+                        color="#333"
+                        mb={1}
+                        textTransform="capitalize"
+                      >
+                        {product.productName}
                       </Box>
-                    </Stack>
-                  );
-                })
-              ) : (
-                <Box className="no-data">Product are not aviable!</Box>
-              )}
-            </Stack>
-          </Stack>
+                      <Box
+                        fontSize={{xs: 16, md: 18}}
+                        fontWeight={700}
+                        color="#8e44ad"
+                      >
+                        ${product.productPrice.toFixed(2)}
+                      </Box>
+                      <Box fontSize={14} color="#888" mt={0.5}>
+                        👁️ {product.productViews} views
+                      </Box>
+                    </Box>
+                  </Box>
+                );
+              })
+            ) : (
+              <Box mt={8} fontSize={20} color="#666">
+                No products found
+              </Box>
+            )}
+          </Box>
+
+          {/* Pagination */}
           <Stack className="pagination-section">
             <Pagination
               count={
@@ -311,16 +395,16 @@ export default function Products(props: ProductsProps) {
         <Box className="brand-text">Our Family Brands</Box>
         <Stack className="brand-cards">
           <Box className="brand-card">
-            <img src="brands/1.svg" alt="" />
+            <img src="/brands/1.svg" alt="" />
           </Box>
           <Box className="brand-card">
-            <img src="brands/2.svg" alt="" />
+            <img src="/brands/2.svg" alt="" />
           </Box>
           <Box className="brand-card">
-            <img src="brands/3.svg" alt="" />
+            <img src="/brands/3.svg" alt="" />
           </Box>
           <Box className="brand-card">
-            <img src="brands/4.svg" alt="" />
+            <img src="/brands/4.svg" alt="" />
           </Box>
         </Stack>
       </div>
@@ -330,7 +414,7 @@ export default function Products(props: ProductsProps) {
             <Box className="title">Our address</Box>
             <iframe
               style={{marginTop: "60px"}}
-              src="https://www.google.com/maps?q=Jeonju,+South+Korea&z=13&ie=UTF8&iwloc=&output=embed"
+              src="https://www.google.com/maps?q=Burak+restaurand+istanbul&amp;t&amp;z=13&amp;ie=UTF8&amp;iwloc&amp;output=embed"
               height="500px"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>

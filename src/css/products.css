@@ -20,6 +20,30 @@
   margin-top: 83px;
 }
 
+.top-text {
+  font-size: 28px;
+  margin-top: 30px;
+  font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(90deg, #8e44ad, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.top-text:hover {
+  transform: scale(1.05);
+  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(90deg, #e67e22, #f1c40f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .products-page .products .avatar-big-box .top-title {
   display: flex;
   flex-direction: row;
