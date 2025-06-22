@@ -1,15 +1,17 @@
+import "../src/css/index.css";
+
+import App from "./app/App";
+import {BrowserRouter} from "react-router-dom";
+import ContextProvider from "./app/Context/ContextProvider";
+import CssBaseline from "@mui/material/CssBaseline";
+import {Provider} from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom/client"; // For React 18+
-import { Provider } from "react-redux";
-import { store } from "./app/store";
-import App from "./app/App";
+// import {SocketProvider} from "./app/Context/SocketContext";
+import {ThemeProvider} from "@mui/material/styles";
 import reportWebVitals from "./reportWebVitals";
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
+import {store} from "./app/store";
 import theme from "./app/MaterialTheme";
-import { BrowserRouter } from "react-router-dom";
-import "../src/css/index.css";
-import ContextProvider from "./app/Context/ContextProvider";
 
 // Define the props type for Router
 type RouterProps = {
@@ -17,7 +19,7 @@ type RouterProps = {
 };
 
 // Use RouterProps to explicitly define the props
-const Router: React.FC<RouterProps> = ({ children }) => (
+const Router: React.FC<RouterProps> = ({children}) => (
   <BrowserRouter>{children}</BrowserRouter>
 );
 
@@ -28,12 +30,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <ContextProvider>
+        {/* <SocketProvider> */}
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
             <App />
           </Router>
         </ThemeProvider>
+        {/* </SocketProvider> */}
       </ContextProvider>
     </Provider>
   </React.StrictMode>
